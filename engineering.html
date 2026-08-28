@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineering — Nadya Codes</title>
+<meta name="description" content="Notes on Android engineering — AdMob, Media3, and other real-world problems.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="logo">NADYA<span class="cursor">_</span>CODES</a>
+    <nav class="main-nav">
+      <a href="projects.html">Projects</a>
+      <a href="engineering.html" class="active">Engineering</a>
+      <a href="ideas.html">Ideas</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap list-page">
+
+  <div class="file-tab">
+    <span class="dots"><span></span><span></span><span></span></span>
+    engineering.md
+  </div>
+  <div class="editor-frame">
+
+    <div class="hero">
+      <p class="hero-prompt">$ git log --oneline</p>
+      <h1>Notes from the codebase.</h1>
+      <p class="lede">Write-ups on real problems I ran into building Android apps — the kind of thing I wish I'd found when I was debugging at midnight.</p>
+    </div>
+
+    <div class="tree" style="margin-top: 12px;">
+
+      <a class="tree-item" id="admob" href="#admob">
+        <div class="tree-row">
+          <span class="tree-connector">├──</span>
+          <span class="tree-name">How I integrated AdMob</span>
+          <span class="tree-meta">draft</span>
+        </div>
+        <p class="tree-desc">What actually worked when wiring up AdMob into a production Android app — and the parts of the docs that left out the important bits.</p>
+      </a>
+
+      <a class="tree-item" id="exoplayer-media3" href="#exoplayer-media3">
+        <div class="tree-row">
+          <span class="tree-connector">└──</span>
+          <span class="tree-name">Migrating ExoPlayer to Media3</span>
+          <span class="tree-meta">draft</span>
+        </div>
+        <p class="tree-desc">Notes from moving a video-heavy app off ExoPlayer and onto Media3 without breaking playback for existing users.</p>
+      </a>
+
+    </div>
+
+    <p class="placeholder-note">Both posts are marked as drafts — publish dates and full write-ups go here once they're ready.</p>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© 2026 Nadya Codes</span>
+    <a href="about.html">About / contact</a>
+  </div>
+</footer>
+
+</body>
+</html>
