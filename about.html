@@ -1,64 +1,126 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About — Nadya Codes</title>
-<meta name="description" content="About Nadya — Senior Android Engineer.">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
+```css
+/* ---------- About page ---------- */
 
-<header class="site-header">
-  <div class="wrap">
-    <a href="index.html" class="logo">NADYA<span class="cursor">_</span>CODES</a>
-    <nav class="main-nav">
-      <a href="projects.html">Projects</a>
-      <a href="engineering.html">Engineering</a>
-      <a href="ideas.html">Ideas</a>
-      <a href="about.html" class="active">About</a>
-    </nav>
-  </div>
-</header>
+.about-page {
+  max-width: 760px;
+}
 
-<main class="wrap">
+.about-intro {
+  padding: 90px 0 70px;
+  max-width: 680px;
+}
 
-  <div class="file-tab">
-    <span class="dots"><span></span><span></span><span></span></span>
-    README.md
-  </div>
-  <div class="editor-frame">
+.about-intro .eyebrow {
+  margin: 0 0 16px;
 
-    <div class="about-header">
-      <div class="avatar">N</div>
-      <div>
-        <h1>Nadya</h1>
-        <p class="role">Senior Android Engineer</p>
-      </div>
-    </div>
+  color: var(--text-dim);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
 
-    <div class="about-body">
-      <p>I build Android apps for a living — <strong>Kotlin</strong> by day, side projects like FitMe, Tvoj Bazar, and Angry Vegetables by night. This site is where I write about the engineering problems I run into, and the ideas I can't stop thinking about outside of work.</p>
-      <p>Bio placeholder — swap this in with your background: where you've worked, what you specialize in (media playback, ads SDKs, architecture, whatever it is), and what you're curious about right now.</p>
-    </div>
+.about-intro h1 {
+  margin: 0 0 24px;
 
-    <div class="links-row">
-      <a href="https://github.com/nadyabr-codes" target="_blank" rel="noopener">GitHub</a>
-      <a href="#" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="mailto:hello@example.com">Email</a>
-    </div>
+  font-size: 46px;
+  line-height: 1.12;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
 
-    <p class="placeholder-note">This whole page is a placeholder — once your CV upload comes through, I'll fill in your real experience, and you can swap the GitHub/LinkedIn/email links for the real ones.</p>
+.about-lede {
+  max-width: 620px;
 
-  </div>
-</main>
+  margin: 0;
 
-<footer class="site-footer">
-  <div class="wrap">
-    <span>© 2026 Nadya Codes</span>
-    <a href="about.html">About / contact</a>
-  </div>
-</footer>
+  color: var(--text-dim);
+  font-size: 19px;
+  line-height: 1.65;
+}
 
-</body>
-</html>
+
+.about-content {
+  max-width: 650px;
+
+  padding: 48px 0 70px;
+
+  border-top: 1px solid var(--rule);
+}
+
+.about-content p {
+  margin: 0 0 24px;
+
+  color: var(--text-dim);
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.about-content p:last-child {
+  margin-bottom: 0;
+}
+
+.about-content strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+
+/* ---------- Links ---------- */
+
+.about-links {
+  padding: 42px 0 80px;
+
+  border-top: 1px solid var(--rule);
+}
+
+.about-links h2 {
+  margin: 0 0 20px;
+
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.about-links .links-row {
+  margin: 0;
+  padding: 0;
+  border: none;
+
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.about-links .links-row a {
+  color: var(--text-dim);
+  font-size: 14px;
+
+  border: none;
+}
+
+.about-links .links-row a:hover {
+  color: var(--text);
+}
+
+
+@media (max-width: 700px) {
+
+  .about-intro {
+    padding: 70px 0 55px;
+  }
+
+  .about-intro h1 {
+    font-size: 36px;
+  }
+
+  .about-lede {
+    font-size: 17px;
+  }
+
+  .about-content p {
+    font-size: 16px;
+  }
+}
+```
