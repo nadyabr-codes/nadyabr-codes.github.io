@@ -1,126 +1,22 @@
-```css
-/* ---------- About page ---------- */
-
-.about-page {
-  max-width: 760px;
-}
-
-.about-intro {
-  padding: 90px 0 70px;
-  max-width: 680px;
-}
-
-.about-intro .eyebrow {
-  margin: 0 0 16px;
-
-  color: var(--text-dim);
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.about-intro h1 {
-  margin: 0 0 24px;
-
-  font-size: 46px;
-  line-height: 1.12;
-  font-weight: 500;
-  letter-spacing: -0.035em;
-}
-
-.about-lede {
-  max-width: 620px;
-
-  margin: 0;
-
-  color: var(--text-dim);
-  font-size: 19px;
-  line-height: 1.65;
-}
-
-
-.about-content {
-  max-width: 650px;
-
-  padding: 48px 0 70px;
-
-  border-top: 1px solid var(--rule);
-}
-
-.about-content p {
-  margin: 0 0 24px;
-
-  color: var(--text-dim);
-  font-size: 17px;
-  line-height: 1.75;
-}
-
-.about-content p:last-child {
-  margin-bottom: 0;
-}
-
-.about-content strong {
-  color: var(--text);
-  font-weight: 500;
-}
-
-
-/* ---------- Links ---------- */
-
-.about-links {
-  padding: 42px 0 80px;
-
-  border-top: 1px solid var(--rule);
-}
-
-.about-links h2 {
-  margin: 0 0 20px;
-
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.about-links .links-row {
-  margin: 0;
-  padding: 0;
-  border: none;
-
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-
-.about-links .links-row a {
-  color: var(--text-dim);
-  font-size: 14px;
-
-  border: none;
-}
-
-.about-links .links-row a:hover {
-  color: var(--text);
-}
-
-
-@media (max-width: 700px) {
-
-  .about-intro {
-    padding: 70px 0 55px;
-  }
-
-  .about-intro h1 {
-    font-size: 36px;
-  }
-
-  .about-lede {
-    font-size: 17px;
-  }
-
-  .about-content p {
-    font-size: 16px;
-  }
-}
-```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Nadya Codes</title>
+  <meta name="description" content="About Nadya, an Android engineer building useful things.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header"><div class="wrap header-inner">
+    <a href="index.html" class="logo">NADYA CODES</a>
+    <nav class="main-nav" aria-label="Main navigation"><a href="projects.html">Projects</a><a href="engineering.html">Engineering</a><a href="ideas.html">Ideas</a><a class="active" href="about.html">About</a></nav>
+  </div></header>
+  <main class="wrap about-page">
+    <section class="about-intro"><p class="eyebrow">A little about me</p><h1>I build things for the little screen.</h1><p class="about-lede">I’m Nadya, a senior Android engineer who enjoys turning complicated ideas into calm, useful products.</p></section>
+    <section class="about-content"><p>I care about the practical craft of software: good defaults, tiny interactions that feel right, and codebases that are a pleasure to revisit.</p><p>Here I keep notes from projects, experiments, and the occasional rabbit hole. <strong>It’s a record of what I’m building and learning in public.</strong></p></section>
+    <section class="about-links"><h2>Find me elsewhere</h2><ul class="links-row"><li><a href="#">GitHub ↗</a></li><li><a href="#">LinkedIn ↗</a></li><li><a href="engineering.html">Engineering notes →</a></li></ul></section>
+  </main>
+  <footer class="site-footer"><div class="wrap footer-inner"><span>© 2026 Nadya Codes</span><div><a href="about.html">About</a><a href="#">GitHub</a><a href="#">LinkedIn</a></div></div></footer>
+</body>
+</html>
