@@ -1,134 +1,155 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Nadya Codes</title>
-<meta name="description" content="Nadya Codes — Android engineering, projects, and ideas.">
+
+<meta
+  name="description"
+  content="Nadya Codes — Android engineering, projects, and ideas."
+>
+
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <header class="site-header">
-  <div class="wrap">
-    <a href="index.html" class="logo">NADYA<span class="cursor">_</span>CODES</a>
+  <div class="wrap header-inner">
+
+    <a href="index.html" class="logo">NADYA_CODES</a>
+
     <nav class="main-nav">
       <a href="projects.html">Projects</a>
       <a href="engineering.html">Engineering</a>
       <a href="ideas.html">Ideas</a>
       <a href="about.html">About</a>
     </nav>
+
   </div>
 </header>
 
+
 <main class="wrap">
 
-  <div class="file-tab">
-    <span class="dots"><span></span><span></span><span></span></span>
-    index.md
-  </div>
-  <div class="editor-frame">
+  <section class="hero">
 
-    <div class="hero">
-      <p class="hero-prompt">$ whoami</p>
-      <h1>Nadya — Senior Android Engineer.</h1>
-      <p>I build apps, break things occasionally on purpose, and write about both. This is where the projects, the engineering notes, and the half-formed ideas live.</p>
+    <p class="eyebrow">Senior Android Engineer</p>
+
+    <h1>
+      I build apps, figure things out,
+      and write about what I learn.
+    </h1>
+
+    <p class="hero-text">
+      This is my little corner of the internet for projects,
+      engineering notes, experiments, and ideas.
+    </p>
+
+  </section>
+
+
+  <section class="section">
+
+    <div class="section-header">
+      <h2>Selected projects</h2>
+      <a href="projects.html">View all →</a>
     </div>
 
-    <div class="tree" style="margin-top: 40px;">
-      <p class="tree-group-label">~/nadya-codes</p>
+    <div class="project-list">
 
-      <div class="tree-group">
-        <a class="tree-item" href="projects.html">
-          <div class="tree-row">
-            <span class="tree-connector">├──</span>
-            <span class="tree-name">projects/</span>
-          </div>
-        </a>
-        <a class="tree-item" href="projects.html#fitme">
-          <div class="tree-row">
-            <span class="tree-connector">│&nbsp;&nbsp;&nbsp;├──</span>
-            <span class="tree-name">FitMe</span>
-          </div>
-        </a>
-        <a class="tree-item" href="projects.html#tvoj-bazar">
-          <div class="tree-row">
-            <span class="tree-connector">│&nbsp;&nbsp;&nbsp;├──</span>
-            <span class="tree-name">Tvoj Bazar</span>
-          </div>
-        </a>
-        <a class="tree-item" href="projects.html#angry-vegetables">
-          <div class="tree-row">
-            <span class="tree-connector">│&nbsp;&nbsp;&nbsp;└──</span>
-            <span class="tree-name">Angry Vegetables</span>
-          </div>
-        </a>
-      </div>
+      <a href="projects.html#fitme" class="project">
+        <div>
+          <h3>FitMe</h3>
+          <p>A calorie tracker for Android.</p>
+        </div>
+        <span class="project-meta">Android</span>
+      </a>
 
-      <div class="tree-group">
-        <a class="tree-item" href="engineering.html">
-          <div class="tree-row">
-            <span class="tree-connector">├──</span>
-            <span class="tree-name">engineering/</span>
-          </div>
-        </a>
-        <a class="tree-item" href="engineering.html#admob">
-          <div class="tree-row">
-            <span class="tree-connector">│&nbsp;&nbsp;&nbsp;├──</span>
-            <span class="tree-name">How I integrated AdMob</span>
-          </div>
-        </a>
-        <a class="tree-item" href="engineering.html#exoplayer-media3">
-          <div class="tree-row">
-            <span class="tree-connector">│&nbsp;&nbsp;&nbsp;└──</span>
-            <span class="tree-name">Migrating ExoPlayer to Media3</span>
-          </div>
-        </a>
-      </div>
+      <a href="projects.html#tvoj-bazar" class="project">
+        <div>
+          <h3>Tvoj Bazar</h3>
+          <p>A marketplace app for Montenegro.</p>
+        </div>
+        <span class="project-meta">Android</span>
+      </a>
 
-      <div class="tree-group">
-        <a class="tree-item" href="ideas.html">
-          <div class="tree-row">
-            <span class="tree-connector">└──</span>
-            <span class="tree-name">ideas/</span>
-          </div>
-        </a>
-        <a class="tree-item" href="ideas.html#bill-gates-ai">
-          <div class="tree-row">
-            <span class="tree-connector">&nbsp;&nbsp;&nbsp;&nbsp;├──</span>
-            <span class="tree-name">What Bill Gates thinks about AI</span>
-          </div>
-        </a>
-        <a class="tree-item" href="ideas.html#algorithms">
-          <div class="tree-row">
-            <span class="tree-connector">&nbsp;&nbsp;&nbsp;&nbsp;├──</span>
-            <span class="tree-name">I decided to try algorithms</span>
-          </div>
-        </a>
-        <a class="tree-item" href="ideas.html#a-book">
-          <div class="tree-row">
-            <span class="tree-connector">&nbsp;&nbsp;&nbsp;&nbsp;├──</span>
-            <span class="tree-name">A book that made me think</span>
-          </div>
-        </a>
-        <a class="tree-item" href="ideas.html#ai-for-devs">
-          <div class="tree-row">
-            <span class="tree-connector">&nbsp;&nbsp;&nbsp;&nbsp;└──</span>
-            <span class="tree-name">What AI means for developers</span>
-          </div>
-        </a>
-      </div>
+      <a href="projects.html#angry-vegetables" class="project">
+        <div>
+          <h3>Angry Vegetables</h3>
+          <p>A small game experiment built with Kotlin and Compose.</p>
+        </div>
+        <span class="project-meta">Android / Game</span>
+      </a>
+
     </div>
 
-  </div>
+  </section>
+
+
+  <section class="section">
+
+    <div class="section-header">
+      <h2>Latest writing</h2>
+      <a href="engineering.html">Engineering →</a>
+    </div>
+
+    <div class="post-list">
+
+      <a href="engineering.html#admob" class="post">
+        <div>
+          <h3>How I integrated AdMob into my Android app</h3>
+          <span>Engineering</span>
+        </div>
+        <time>Aug 2026</time>
+      </a>
+
+      <a href="engineering.html#exoplayer-media3" class="post">
+        <div>
+          <h3>Migrating ExoPlayer to Media3</h3>
+          <span>Engineering</span>
+        </div>
+        <time>Aug 2026</time>
+      </a>
+
+      <a href="ideas.html#bill-gates-ai" class="post">
+        <div>
+          <h3>What Bill Gates thinks about AI</h3>
+          <span>Ideas</span>
+        </div>
+        <time>Aug 2026</time>
+      </a>
+
+      <a href="ideas.html#algorithms" class="post">
+        <div>
+          <h3>I decided to try algorithms</h3>
+          <span>Ideas</span>
+        </div>
+        <time>Aug 2026</time>
+      </a>
+
+    </div>
+
+  </section>
+
 </main>
 
+
 <footer class="site-footer">
-  <div class="wrap">
+  <div class="wrap footer-inner">
     <span>© 2026 Nadya Codes</span>
-    <a href="about.html">About / contact</a>
+
+    <div>
+      <a href="about.html">About</a>
+      <a href="#">GitHub</a>
+      <a href="#">LinkedIn</a>
+    </div>
   </div>
 </footer>
 
 </body>
 </html>
+```
