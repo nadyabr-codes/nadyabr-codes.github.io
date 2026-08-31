@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Don't Quit Your Day Job: AdMob in My Android Game — Nadya Codes</title>
+  <meta name="description" content="What I learned wiring banner and App Open ads into a small Android survival game.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a href="index.html" class="logo"><img src="assets/images/nadya-bryzgalova.jpg" alt="Nadya Bryzgalova">Nadya Bryzgalova</a>
+      <nav class="main-nav"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="engineering.html" class="active">Engineering</a><a href="ideas.html">Ideas</a><a href="about.html">About</a></nav>
+    </div>
+  </header>
+
+  <main class="wrap article-page">
+    <article>
+      <header class="article-header">
+        <p class="eyebrow">Engineering</p>
+        <h1>Don't Quit Your Day Job: Here's How I Wired AdMob Into My Android Game</h1>
+        <p class="article-dek">A practical look at banner and App Open ads — and the Android lifecycle details behind a small survival game.</p>
+        <div class="article-meta"><span>Aug 2026</span><span>Android · AdMob</span></div>
+      </header>
+
+      <div class="article-content">
+        <p>I built a small survival game for Android where you tap angry vegetables before they eat your tree. It's not going to make me rich. Almost no indie game does. But I wanted to actually ship the monetization layer instead of just leaving a “TODO: ads” comment in the code forever, so here's how I did it, warts and all.</p>
+
+        <h2>Let's set expectations first</h2>
+        <p>If you're reading this hoping for a “how I made $10k with a mobile game” story, that's not what this is. Most indie games are made for fun, and if you break even on the Play Store developer fee, that's already a decent outcome. Making real money from mobile ad revenue is closer to buying a lottery ticket than running a business: everyone tries, almost nobody wins big, and I'm not going to pretend otherwise.</p>
+        <p>Here is a rough, illustrative sense of the ranges people report publicly for these formats. This isn't a forecast or a guarantee for any specific app; actual eCPM varies widely by geography, seasonality, ad-format fill, and niche.</p>
+        <table>
+          <thead><tr><th>Format</th><th>Tier-1 eCPM (US/UK/CA/AU)</th><th>Global eCPM</th></tr></thead>
+          <tbody><tr><td>Banner</td><td>$0.50–$1.50</td><td>$0.20–$0.80</td></tr><tr><td>Interstitial / App Open</td><td>$2.50–$8.00</td><td>$2.50–$5.00</td></tr><tr><td>Rewarded video</td><td>$15–$30</td><td>$8–$18</td></tr></tbody>
+        </table>
+        <p>eCPM means “earnings per 1,000 ad impressions.” Banners are the weakest format per impression, but they're shown constantly in the background, so volume adds up. App Open ads — the full-screen ad shown when a user returns to your app from the background — behave more like interstitials: fewer impressions, but each one is worth more.</p>
+        <p>Rough napkin math: to clear something like $10/month from banners alone, at a global-average eCPM around $0.30–$0.50, you'd need roughly 20,000–35,000 banner impressions a month. As one illustrative example, a player who opens the game twice a day, with each visit counting as roughly one impression, generates about 60 impressions a month. That puts the target at somewhere around 300–500 daily active users. Shift those assumptions and the number moves a fair amount either way, so treat it as a sense of scale, not a target to hit.</p>
+        <aside class="article-note"><p>Supervised (Family Link) accounts don't simply mean “no ads.” Google restricts personalized advertising for known child users, but contextual ads can still be served — typically at a lower eCPM since there is less targeting signal.</p></aside>
+        <p>So: try it, learn from it, don't quit your job over it.</p>
+
+        <h2>Why banner + App Open, and not interstitials or rewarded video</h2>
+        <p>My game has two natural calm moments: the main menu and the game-over screen. Both are static, non-time-critical screens, which makes them a good fit for a <strong>banner</strong>: it just sits at the bottom and doesn't interrupt anything.</p>
+        <p>I also added an <strong>App Open ad</strong>, shown when the player returns to the app after being backgrounded for a while. It fits a short survival game where people bounce in and out of sessions frequently.</p>
+        <p>What I deliberately skipped:</p>
+        <ul><li><strong>Interstitials between waves.</strong> My game already has fast, punchy pacing between waves, and a forced full-screen ad there would kill the flow.</li><li><strong>Rewarded video.</strong> There's no in-game currency or extra life to reward yet. Rewarded ads work best when you can offer something the player actually wants in exchange, and right now I don't have that hook.</li></ul>
+
+        <h2>Setting up AdMob</h2>
+        <ol><li><strong>Create an account</strong> at <a href="https://admob.google.com/">admob.google.com</a> with a Google account.</li><li><strong>Add your app</strong> in the AdMob console. If it is already published, search by app name or package name and AdMob links it automatically. If not, add it manually, choose Android, and answer “No” when asked if it is listed on a supported app store. AdMob issues an App ID right away, marked as <em>unlinked</em> until you publish.</li><li><strong>Complete the readiness review.</strong> Getting an App ID is instant, but AdMob separately reviews the app itself for policy compliance and, where applicable, app-ads.txt verification.</li><li><strong>Create ad units</strong> inside the app: one Banner unit and one App Open unit. Each has its own ad-unit ID, separate from the App ID.</li><li><strong>Set up app-ads.txt.</strong> This feeds into the readiness review and is the step that trips people up.</li></ol>
+
+        <h3>The app-ads.txt step people skip</h3>
+        <p>app-ads.txt is an IAB Tech Lab standard that AdMob and other exchanges use as part of app verification. It is a public declaration of which sellers are authorized to sell your inventory, helping exchanges distinguish genuine inventory from a spoofed copy of your app.</p>
+        <ol><li>Your Google Play listing needs a <strong>developer website</strong> in the App support section. Without it, AdMob's crawler has nowhere to look.</li><li>Host a plain text file named <code>app-ads.txt</code> at the exact root of that domain.</li></ol>
+        <pre><code>google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0</code></pre>
+        <ol start="3"><li>AdMob's crawler visits the developer website in your listing and checks for the exact root path, not a subfolder.</li><li>Once it finds and parses the file, your status moves to verified. This can take up to 24 hours, sometimes longer after a store-listing update.</li><li>Verification feeds into app readiness. An unverified file can limit how inventory is served, on top of leaving you exposed to spoofing.</li></ol>
+        <p>You don't need paid hosting for this. <strong>GitHub Pages works fine and is free.</strong> I used an account-level site, which serves root files at <code>https://yourusername.github.io/app-ads.txt</code>. Enable Pages, put that URL in the Play Store developer-website field, wait for the crawl, and check the status in AdMob.</p>
+
+        <h2>Wiring the IDs into the project</h2>
+        <p>The app-level App ID goes into the manifest as metadata:</p>
+        <pre><code>&lt;!-- AndroidManifest.xml --&gt;
+&lt;meta-data
+    android:name="com.google.android.gms.ads.APPLICATION_ID"
+    android:value="ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX" /&gt;
+
+&lt;meta-data
+    android:name="com.google.android.gms.ads.flag.OPTIMIZE_INITIALIZATION"
+    android:value="true" /&gt;
+&lt;meta-data
+    android:name="com.google.android.gms.ads.flag.OPTIMIZE_AD_LOADING"
+    android:value="true" /&gt;</code></pre>
+        <p>These two optional flags let the SDK defer non-critical initialization work and batch ad-loading calls rather than doing everything eagerly at cold start. The dependency in Gradle is:</p>
+        <pre><code>// build.gradle.kts
+dependencies {
+    implementation("com.google.android.gms:play-services-ads:23.1.0")
+}</code></pre>
+        <p>The individual ad-unit IDs — different from the App ID above — live wherever you actually request an ad.</p>
+
+        <h2>The banner: an adaptive <code>AndroidView</code></h2>
+        <p>Compose doesn't have a native AdMob composable, so the banner is wrapped in an <code>AndroidView</code>:</p>
+        <pre><code>@Composable
+fun AdBanner(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val displayMetrics = context.resources.displayMetrics
+    val adWidth = (displayMetrics.widthPixels / displayMetrics.density).toInt()
+
+    AndroidView(
+        modifier = modifier.fillMaxWidth(),
+        factory = { ctx -&gt;
+            AdView(ctx).apply {
+                adUnitId = "ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX"
+                setAdSize(AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(ctx, adWidth))
+                loadAd(AdRequest.Builder().build())
+            }
+        }
+    )
+}</code></pre>
+        <p>The important part is <code>getCurrentOrientationAnchoredAdaptiveBannerAdSize</code> instead of a fixed 320×50 banner. Adaptive banners size themselves to the actual screen width and pick the tallest banner that still fits. If you ever put a banner in a narrower container, measure that container instead of using <code>displayMetrics.widthPixels</code>.</p>
+
+        <h2>The App Open ad and the Application-level lifecycle</h2>
+        <p>This took the most iteration, because App Open ads aren't tied to a single screen. They need the <em>process</em> lifecycle, not an individual Activity's lifecycle. Show one when the user navigates between your own screens and “welcome back” becomes “please stop interrupting me.”</p>
+        <p>The manager itself is a standard wrapper around <code>AppOpenAd.load()</code>:</p>
+        <pre><code>class AppOpenAdManager(private val context: Context) {
+    private var appOpenAd: AppOpenAd? = null
+    private var isLoadingAd = false
+    var isShowingAd = false
+    private var loadTime: Long = 0
+    var onAdLoadedListener: (() -&gt; Unit)? = null
+
+    init { loadAd() }
+
+    fun loadAd() {
+        if (isLoadingAd || isAdAvailable()) return
+        isLoadingAd = true
+        AppOpenAd.load(context, adUnitId, AdRequest.Builder().build(), callback)
+    }
+
+    fun isAdAvailable() = appOpenAd != null &amp;&amp; Date().time - loadTime &lt; 4 * 60 * 60 * 1000L
+
+    fun showAdIfAvailable(activity: Activity, onComplete: () -&gt; Unit) {
+        if (isShowingAd || !isAdAvailable()) { onComplete(); loadAd(); return }
+        appOpenAd?.fullScreenContentCallback = fullScreenCallback
+        isShowingAd = true
+        appOpenAd?.show(activity)
+    }
+}</code></pre>
+        <p>Two details were not obvious to me at first:</p>
+        <ul><li><strong>The four-hour cache window.</strong> This isn't an AdMob-side setting and the SDK doesn't enforce it for you. It is a client-side check: discard an ad that is more than four hours old, because it may no longer be valid or earn revenue.</li><li><strong>The <code>isShowingAd</code> guard.</strong> This protects against overlapping show attempts if the process lifecycle fires again while an ad is already visible.</li></ul>
+        <p>Then the <code>Application</code> class decides when an ad should appear:</p>
+        <pre><code>class AngryVegetablesApp : Application(), Application.ActivityLifecycleCallbacks, DefaultLifecycleObserver {
+    private var showAdOnLoad = false
+    private var currentActivity: Activity? = null
+    private var isColdStart = true
+
+    override fun onStart(owner: LifecycleOwner) {
+        if (isColdStart) { isColdStart = false; return }
+        Handler(Looper.getMainLooper()).post {
+            currentActivity?.let {
+                if (!appOpenAdManager.isShowingAd) {
+                    if (appOpenAdManager.isAdAvailable()) appOpenAdManager.showAdIfAvailable(it) {}
+                    else { showAdOnLoad = true; appOpenAdManager.loadAd() }
+                }
+            }
+        }
+    }
+
+    override fun onActivityStarted(activity: Activity) {
+        if (!appOpenAdManager.isShowingAd) currentActivity = activity
+    }
+    override fun onActivityResumed(activity: Activity) { currentActivity = activity }
+    override fun onActivityStopped(activity: Activity) { if (currentActivity == activity) currentActivity = null }
+}</code></pre>
+        <p>The key split is between <code>ActivityLifecycleCallbacks</code>, which fires constantly as you navigate, and <code>ProcessLifecycleOwner</code>, which fires once per app-level foreground/background transition. App Open ads should react to the second one, not the first.</p>
+        <p>The <code>isColdStart</code> flag guarantees the first launch cannot show an ad, while the manager preloads one immediately. The <code>showAdOnLoad</code> flag closes a race condition: if the app foregrounds before an ad finishes loading, it triggers the show once that ad arrives. Reset that flag as soon as it is checked; otherwise a stale value can make an unrelated later load trigger a show.</p>
+        <p>Emulators are automatically treated as test devices by the SDK. Physical devices aren't: add each device ID reported by logcat while developing, and never tap production ads while testing.</p>
+        <pre><code>val testDeviceIds = listOf(AdRequest.DEVICE_ID_EMULATOR)
+val config = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+MobileAds.setRequestConfiguration(config)</code></pre>
+
+        <h2>Wrap-up</h2>
+        <p class="article-outro">None of this is going to fund early retirement. But building it properly — adaptive banner sizing and the process-versus-activity lifecycle distinction for App Open ads — was a genuinely useful Android exercise, independent of whatever pocket change it eventually brings in. If you're doing the same thing, start with the banner, and get the App Open lifecycle right before you touch anything else.</p>
+        <p>If you want to see what all this ad code is actually running inside of, the game itself is on Google Play: <a href="https://play.google.com/store/apps/details?id=com.nekgames.angryvegetablesremaster&amp;hl=en">Angry Vegetables Remaster</a>.</p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer"><div class="wrap footer-inner"><span>© 2026 Nadya Codes</span><div><a href="https://www.linkedin.com/in/nadezhdakaplun" rel="me">LinkedIn</a><a href="https://play.google.com/store/apps/dev?id=6169193065865664574&amp;hl=en">Google Play</a></div></div></footer>
+</body>
+</html>
