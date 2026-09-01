@@ -35,7 +35,7 @@
           <tbody><tr><td>Banner</td><td>$0.50–$1.50</td><td>$0.20–$0.80</td></tr><tr><td>Interstitial / App Open</td><td>$2.50–$8.00</td><td>$2.50–$5.00</td></tr><tr><td>Rewarded video</td><td>$15–$30</td><td>$8–$18</td></tr></tbody>
         </table>
         <p>eCPM means “earnings per 1,000 ad impressions.” Banners are the weakest format per impression, but they're shown constantly in the background, so volume adds up. App Open ads — the full-screen ad shown when a user returns to your app from the background — behave more like interstitials: fewer impressions, but each one is worth more.</p>
-        <p>Rough napkin math: to clear something like $10/month from banners alone, at a global-average eCPM around $0.30–$0.50, you'd need roughly 20,000–35,000 banner impressions a month. As one illustrative example, a player who opens the game twice a day, with each visit counting as roughly one impression, generates about 60 impressions a month. That puts the target at somewhere around 300–500 daily active users. Shift those assumptions and the number moves a fair amount either way, so treat it as a sense of scale, not a target to hit.</p>
+        <p><strong>Rough napkin math:</strong> to clear something like $10/month from banners alone, at a global-average eCPM around $0.30–$0.50, you'd need roughly 20,000–35,000 banner impressions a month. A player who opens the game twice a day, with each visit counting as roughly one impression, generates about 60 impressions a month — which puts the target at somewhere around 300–500 daily active users. Shift those assumptions and the number moves a fair amount either way, so treat it as a sense of scale, not a target to hit.</p>
         <aside class="article-note"><p>Supervised (Family Link) accounts don't simply mean “no ads.” Google restricts personalized advertising for known child users, but contextual ads can still be served — typically at a lower eCPM since there is less targeting signal.</p></aside>
         <p>So: try it, learn from it, don't quit your job over it.</p>
 
@@ -50,9 +50,15 @@
 
         <h3>The app-ads.txt step people skip</h3>
         <p>app-ads.txt is an IAB Tech Lab standard that AdMob and other exchanges use as part of app verification. It is a public declaration of which sellers are authorized to sell your inventory, helping exchanges distinguish genuine inventory from a spoofed copy of your app.</p>
-        <ol><li>Your Google Play listing needs a <strong>developer website</strong> in the App support section. Without it, AdMob's crawler has nowhere to look.</li><li>Host a plain text file named <code>app-ads.txt</code> at the exact root of that domain.</li></ol>
-        <pre><code>google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0</code></pre>
-        <ol start="3"><li>AdMob's crawler visits the developer website in your listing and checks for the exact root path, not a subfolder.</li><li>Once it finds and parses the file, your status moves to verified. This can take up to 24 hours, sometimes longer after a store-listing update.</li><li>Verification feeds into app readiness. An unverified file can limit how inventory is served, on top of leaving you exposed to spoofing.</li></ol>
+        <ol>
+          <li>Your Google Play listing needs a <strong>developer website</strong> in the App support section. Without it, AdMob's crawler has nowhere to look.</li>
+          <li>Host a plain text file named <code>app-ads.txt</code> at the exact root of that domain:
+            <pre><code>google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0</code></pre>
+          </li>
+          <li>AdMob's crawler visits the developer website in your listing and checks for the exact root path, not a subfolder.</li>
+          <li>Once it finds and parses the file, your status moves to verified. This can take up to 24 hours, sometimes longer after a store-listing update.</li>
+          <li>Verification feeds into app readiness. An unverified file can limit how inventory is served, on top of leaving you exposed to spoofing.</li>
+        </ol>
         <p>You don't need paid hosting for this. <strong>GitHub Pages works fine and is free.</strong> I used an account-level site, which serves root files at <code>https://yourusername.github.io/app-ads.txt</code>. Enable Pages, put that URL in the Play Store developer-website field, wait for the crawl, and check the status in AdMob.</p>
 
         <h2>Wiring the IDs into the project</h2>
