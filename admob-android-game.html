@@ -53,7 +53,7 @@
         <ol>
           <li>Your Google Play listing needs a <strong>developer website</strong> in the App support section. Without it, AdMob's crawler has nowhere to look.</li>
           <li>Host a plain text file named <code>app-ads.txt</code> at the exact root of that domain:
-            <pre><code>google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0</code></pre>
+            <pre><code class="language-plaintext">google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0</code></pre>
           </li>
           <li>AdMob's crawler visits the developer website in your listing and checks for the exact root path, not a subfolder.</li>
           <li>Once it finds and parses the file, your status moves to verified. This can take up to 24 hours, sometimes longer after a store-listing update.</li>
@@ -63,7 +63,7 @@
 
         <h2>Wiring the IDs into the project</h2>
         <p>The app-level App ID goes into the manifest as metadata:</p>
-        <pre><code>&lt;!-- AndroidManifest.xml --&gt;
+        <pre><code class="language-xml">&lt;!-- AndroidManifest.xml --&gt;
 &lt;meta-data
     android:name="com.google.android.gms.ads.APPLICATION_ID"
     android:value="ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX" /&gt;
@@ -75,7 +75,7 @@
     android:name="com.google.android.gms.ads.flag.OPTIMIZE_AD_LOADING"
     android:value="true" /&gt;</code></pre>
         <p>These two optional flags let the SDK defer non-critical initialization work and batch ad-loading calls rather than doing everything eagerly at cold start. The dependency in Gradle is:</p>
-        <pre><code>// build.gradle.kts
+        <pre><code class="language-kotlin">// build.gradle.kts
 dependencies {
     implementation("com.google.android.gms:play-services-ads:23.1.0")
 }</code></pre>
@@ -83,7 +83,7 @@ dependencies {
 
         <h2>The banner: an adaptive <code>AndroidView</code></h2>
         <p>Compose doesn't have a native AdMob composable, so the banner is wrapped in an <code>AndroidView</code>:</p>
-        <pre><code>@Composable
+        <pre><code class="language-kotlin">@Composable
 fun AdBanner(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val displayMetrics = context.resources.displayMetrics
@@ -105,7 +105,7 @@ fun AdBanner(modifier: Modifier = Modifier) {
         <h2>The App Open ad and the Application-level lifecycle</h2>
         <p>This took the most iteration, because App Open ads aren't tied to a single screen. They need the <em>process</em> lifecycle, not an individual Activity's lifecycle. Show one when the user navigates between your own screens and “welcome back” becomes “please stop interrupting me.”</p>
         <p>The manager itself is a standard wrapper around <code>AppOpenAd.load()</code>:</p>
-        <pre><code>class AppOpenAdManager(private val context: Context) {
+        <pre><code class="language-kotlin">class AppOpenAdManager(private val context: Context) {
     private var appOpenAd: AppOpenAd? = null
     private var isLoadingAd = false
     var isShowingAd = false
@@ -132,7 +132,7 @@ fun AdBanner(modifier: Modifier = Modifier) {
         <p>Two details were not obvious to me at first:</p>
         <ul><li><strong>The four-hour cache window.</strong> This isn't an AdMob-side setting and the SDK doesn't enforce it for you. It is a client-side check: discard an ad that is more than four hours old, because it may no longer be valid or earn revenue.</li><li><strong>The <code>isShowingAd</code> guard.</strong> This protects against overlapping show attempts if the process lifecycle fires again while an ad is already visible.</li></ul>
         <p>Then the <code>Application</code> class decides when an ad should appear:</p>
-        <pre><code>class AngryVegetablesApp : Application(), Application.ActivityLifecycleCallbacks, DefaultLifecycleObserver {
+        <pre><code class="language-kotlin">class AngryVegetablesApp : Application(), Application.ActivityLifecycleCallbacks, DefaultLifecycleObserver {
     private var showAdOnLoad = false
     private var currentActivity: Activity? = null
     private var isColdStart = true
@@ -158,7 +158,7 @@ fun AdBanner(modifier: Modifier = Modifier) {
         <p>The key split is between <code>ActivityLifecycleCallbacks</code>, which fires constantly as you navigate, and <code>ProcessLifecycleOwner</code>, which fires once per app-level foreground/background transition. App Open ads should react to the second one, not the first.</p>
         <p>The <code>isColdStart</code> flag guarantees the first launch cannot show an ad, while the manager preloads one immediately. The <code>showAdOnLoad</code> flag closes a race condition: if the app foregrounds before an ad finishes loading, it triggers the show once that ad arrives. Reset that flag as soon as it is checked; otherwise a stale value can make an unrelated later load trigger a show.</p>
         <p>Emulators are automatically treated as test devices by the SDK. Physical devices aren't: add each device ID reported by logcat while developing, and never tap production ads while testing.</p>
-        <pre><code>val testDeviceIds = listOf(AdRequest.DEVICE_ID_EMULATOR)
+        <pre><code class="language-kotlin">val testDeviceIds = listOf(AdRequest.DEVICE_ID_EMULATOR)
 val config = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
 MobileAds.setRequestConfiguration(config)</code></pre>
 
@@ -170,5 +170,12 @@ MobileAds.setRequestConfiguration(config)</code></pre>
   </main>
 
   <footer class="site-footer"><div class="wrap footer-inner"><span>© 2026 Nadya Codes</span><div><a href="https://www.linkedin.com/in/nadezhdakaplun" rel="me">LinkedIn</a><a href="https://play.google.com/store/apps/dev?id=6169193065865664574&amp;hl=en">Google Play</a></div></div></footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    document.querySelectorAll('pre code').forEach(function (block) {
+      hljs.highlightElement(block);
+    });
+  </script>
 </body>
 </html>
