@@ -6,6 +6,21 @@
   <title>About — Nadya Codes</title>
   <meta name="description" content="About Nadya, an Android engineer building useful things.">
   <link rel="stylesheet" href="style.css">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyBX2JP2cuR5hqwxmBz8Sbk0M-R5X9yy_a0",
+      authDomain: "nadyabr-codes.firebaseapp.com",
+      projectId: "nadyabr-codes",
+      storageBucket: "nadyabr-codes.firebasestorage.app",
+      messagingSenderId: "14332726576",
+      appId: "1:14332726576:web:dc4c35e08ef0329d830cf5",
+      measurementId: "G-V221711C2R"
+    };
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
 </head>
 <body>
   <header class="site-header"><div class="wrap header-inner">
