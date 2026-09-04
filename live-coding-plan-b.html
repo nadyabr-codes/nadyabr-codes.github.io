@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Plan B for Live Coding Interviews — Nadya Codes</title>
+  <meta name="description" content="Why recognizing problem-solving patterns is a more useful live-coding safety net than memorizing hundreds of problems.">
+  <link rel="stylesheet" href="style.css">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyBX2JP2cuR5hqwxmBz8Sbk0M-R5X9yy_a0",
+      authDomain: "nadyabr-codes.firebaseapp.com",
+      projectId: "nadyabr-codes",
+      storageBucket: "nadyabr-codes.firebasestorage.app",
+      messagingSenderId: "14332726576",
+      appId: "1:14332726576:web:dc4c35e08ef0329d830cf5",
+      measurementId: "G-V221711C2R"
+    };
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a href="index.html" class="logo"><img src="assets/images/nadya-bryzgalova.jpg" alt="Nadya Bryzgalova">Nadya Bryzgalova</a>
+      <nav class="main-nav"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="engineering.html">Engineering</a><a href="ideas.html" class="active">Ideas</a><a href="about.html">About</a></nav>
+    </div>
+  </header>
+
+  <main class="wrap article-page">
+    <article>
+      <header class="article-header">
+        <p class="eyebrow">Algorithms</p>
+        <h1>Your Plan B for Live Coding Interviews</h1>
+        <p class="article-dek">Why grinding 500 LeetCode problems might not save you from freezing, and how learning to spot problem patterns can become your safety net.</p>
+        <div class="article-meta"><span>Sep 2026</span><span>Algorithms · Interviews</span></div>
+      </header>
+
+      <div class="article-content">
+        <p>What do you do when you get a problem you have never seen before?</p>
+
+        <p>When something I have never seen before lands on my plate, I do not rush to write code right away. I need to sleep on it, literally: read about it, turn it over in my head, see whether someone has tackled it before. Maybe they did, and maybe they solved it better than I would if I jumped in headfirst. If the project is large, spanning several teams, the first thing I do is look through the current codebase. Maybe my team, or a neighboring one, already solved the same or a similar problem. Why reinvent the wheel if you can just ride it? I know how to be lazy in a good way, and usually the code only benefits from that.</p>
+
+        <p>The problem is that live coding interviews demand exactly the opposite. You get a problem, you get an audience waiting for you to start talking and typing, and you get a timer. There is no sleeping on the problem. You have to think out loud, right here, right now. For someone with my type of thinking, this is not about algorithms. It is about format: I am being asked to produce the code before I have had a chance to do the thinking that normally leads me to it.</p>
+
+        <p>The same thing happens at a regular job, it just does not surprise anyone there. By the time of sprint planning, a task has usually already been through grooming: the team has had a chance to look at it, discuss it, estimate it. And even if it has not, nobody expects a full solution plan from you the second it comes up on a call. You have time to figure things out, not because you lack knowledge, but because you first need to understand the problem itself: whether it needs solving at all, whether someone has solved it before, and only then dig into implementation details.</p>
+
+        <p>What helps, more or less, is holding onto one simple thought: I want this job, and for the next hour I am playing by rules I did not set. Not fighting the format, but consciously accepting it, is already half the battle.</p>
+
+        <h2>What about the “500 problems” advice?</h2>
+
+        <p>A common piece of advice is to solve around 500 problems on LeetCode, and then any interview will feel calm. The number is not made up. It really does circulate through the professional community, but it is not some scientific benchmark, more like folklore. In the comments under posts like that, someone always pushes back, pointing out that 500 is just a round number nobody actually measured, and that what matters is not the count but what it is made of.</p>
+
+        <p>I tried it. I got to two hundred. And the problem stayed exactly the same: at home, without pressure, I calmly work through a problem and find a solution. But in the moment of an interview, I catch myself secretly hoping for one thing: that I will get a problem I have already spent time with. One I have already solved, thought through, maybe even sketched out on paper. Attacking an unfamiliar problem from scratch, out loud, under someone's gaze, is something my brain does not like and is not good at doing in the moment.</p>
+
+        <h2>The brain loves patterns</h2>
+
+        <p>This, I think, is where the real difference lies between solving 500 problems and actually building the skill. The first is a hope that the exact problem you solved before will come up again, word for word. The second is the ability to see a familiar structure inside an unfamiliar problem, even when you are reading the exact wording for the first time. My Plan B is not memorizing more problems. It is learning to recognize the structure of an unfamiliar one.</p>
+
+        <p>I am not claiming this is a guaranteed recipe. Nobody and nothing can guarantee solving any problem in 30 minutes on camera. But in my view, it is a far better use of time than grinding through your hundredth problem and hoping for luck. Instead of storming through 500 separate problems, I put together a list of the main problem classes, and more importantly, the signals that let you recognize which class a problem belongs to. The task really comes down to finding the right template: the number of reusable problem-solving patterns is finite, and definitely much smaller than the number of problems you can find on LeetCode.</p>
+
+        <h2>Pattern cheat sheet</h2>
+
+        <aside class="article-note"><p>One honest disclaimer before the table: what I am calling “patterns” here is really a mix of different things, and I know that. HashMap, Linked List, Heap, Trie, and Union-Find are data structures. Binary Search, Prefix Sum, and Bit Manipulation are algorithmic techniques. Two Pointers and Sliding Window are problem-solving patterns in the strict sense. DFS/BFS are traversal strategies. DP and Greedy are optimization paradigms. Backtracking is a search strategy. I am lumping them together on purpose, because in an interview the taxonomy does not matter, only the usefulness does. Treat every row below as a cue for how to approach a problem, not as a label to recite. A data structure is still just a data structure until you can see why this specific problem calls for it.</p></aside>
+
+        <table>
+          <thead><tr><th>Pattern / Technique</th><th>Signal in the problem</th><th>Common clues</th><th>Solution idea</th></tr></thead>
+          <tbody>
+            <tr><td>HashMap / HashSet</td><td>You need fast lookup, counting, or to remember what you've already seen</td><td>duplicates, frequency, seen before, pair, lookup</td><td>Scan the data once and store what you need in a hash table for average O(1) lookup.</td></tr>
+            <tr><td>Two Pointers</td><td>You can exploit an ordering or process two positions at once instead of checking every pair</td><td>sorted array, pair, triplet, two ends, in-place</td><td>Use two indices that move according to the relationship between the current elements.</td></tr>
+            <tr><td>Sliding Window</td><td>You need to find or optimize a contiguous subarray/substring while maintaining a condition over the current range</td><td>contiguous, subarray, substring, longest, shortest, at most K</td><td>Maintain a window with two pointers; expand it as you scan and shrink it when the condition is violated.</td></tr>
+            <tr><td>Prefix Sum</td><td>You need to reason about sums of contiguous ranges without recalculating each range from scratch</td><td>range sum, subarray sum, cumulative sum</td><td>Build cumulative sums so a range sum can be derived from prefix sums; often combine with a HashMap to count matching subarrays.</td></tr>
+            <tr><td>Linked List</td><td>The structure is a linked list and the solution depends on manipulating or comparing node positions</td><td>node, next, cycle, reverse, middle, intersection</td><td>Use a small number of pointers, such as prev/curr or slow/fast, instead of indexing.</td></tr>
+            <tr><td>Stack</td><td>The problem involves nested structure, matching elements, or repeatedly processing the most recent unresolved item</td><td>parentheses, nested, matching, next greater, undo</td><td>Keep unresolved elements on a stack and process them in reverse order when a match or boundary appears.</td></tr>
+            <tr><td>Intervals</td><td>You are given ranges and need to merge them, detect overlaps, or schedule events</td><td>interval, overlap, merge, start/end, schedule</td><td>Usually sort by start time, then scan while comparing the current interval with the previous one.</td></tr>
+            <tr><td>Binary Search</td><td>The search space is ordered, or the answer has a monotonic feasibility condition</td><td>sorted, minimum/maximum satisfying, smallest/largest valid, monotonic</td><td>Eliminate half of the remaining search space at each step by checking the middle value or candidate answer.</td></tr>
+            <tr><td>Tree DFS / BFS</td><td>You need to traverse a tree, calculate a property of it, or find a path/level relationship</td><td>binary tree, depth, height, path, level order</td><td>Use DFS for depth-oriented exploration and recursive relationships; use BFS with a queue for level-by-level exploration.</td></tr>
+            <tr><td>Graph DFS / BFS</td><td>You need to explore connectivity, reachability, paths, or a grid where cells behave like graph nodes</td><td>graph, grid, island, connected, reachable, shortest path</td><td>Traverse neighboring nodes while tracking visited nodes to avoid revisiting the same state.</td></tr>
+            <tr><td>Heap / Priority Queue</td><td>You repeatedly need access to the smallest/largest element, or only care about the top K elements</td><td>top K, kth largest/smallest, minimum, maximum, priority</td><td>Maintain a heap: peek at the extreme value in O(1), and insert/remove in O(log n).</td></tr>
+            <tr><td>Backtracking</td><td>You need to explore many possible choices and abandon a path as soon as it cannot produce a valid solution</td><td>all combinations, permutations, subsets, choices, constraints</td><td>Build a candidate step by step; make a choice, recurse, then undo the choice and try another path.</td></tr>
+            <tr><td>Dynamic Programming</td><td>The problem can be broken into smaller overlapping subproblems whose results can be reused</td><td>number of ways, possible/impossible, max/min, optimal, overlapping</td><td>Define a state representing a smaller problem, then memoize it or build the states bottom-up.</td></tr>
+            <tr><td>Greedy</td><td>A locally optimal choice can be proven to lead to a globally optimal solution, often after sorting</td><td>maximum/minimum, earliest/latest, intervals, scheduling, locally optimal</td><td>Make the best available choice at each step, relying on the problem's structure to guarantee that earlier choices do not need to be revisited.</td></tr>
+            <tr><td>Bit Manipulation</td><td>The problem has a property that can be represented naturally with individual bits</td><td>single number, XOR, set/unset bit, power of two, bitmask</td><td>Use bitwise operations to represent, combine, or compare binary states efficiently.</td></tr>
+            <tr><td>Trie</td><td>You repeatedly need to query strings by their prefixes</td><td>prefix, autocomplete, starts with, dictionary</td><td>Store strings as paths in a prefix tree so prefix-based queries can be performed efficiently.</td></tr>
+            <tr><td>Union-Find</td><td>You need to maintain groups of connected items while repeatedly merging groups or checking whether two items belong to the same group</td><td>connected components, groups, merge, same component, connectivity</td><td>Use a disjoint-set structure with union and find operations to maintain component membership efficiently.</td></tr>
+          </tbody>
+        </table>
+
+        <p>These signals are clues, not rules. A word like “subarray” or “sorted” is rarely enough to identify a pattern on its own. The keywords are not magic words. They are clues that become useful only when combined with the constraints and the structure of the problem. The real skill is connecting the signal to the problem's constraints and the property that makes a particular technique applicable.</p>
+
+        <p>Patterns can also overlap. For example, Subarray Sum Equals K, the problem worked through below, combines Prefix Sum with a HashMap. The goal is not to put every problem into one perfect box, but to recognize a promising direction quickly.</p>
+
+        <p>To make this less theoretical, let's walk through a couple of real LeetCode problems and see how a pattern actually shows up in the wording. I am not copying the LeetCode wording word for word, since that text belongs to someone else, but I will retell it in full detail without leaving anything important out.</p>
+
+        <h3>Example 1: 875. Koko Eating Bananas</h3>
+
+        <p><strong>Problem (retold):</strong> there are n piles of bananas, each with its own count. Koko has h hours before the guards return. She picks an eating speed k: each hour she eats k bananas from one pile, and if that pile has fewer than k bananas left, she finishes the pile and stops eating for that hour. She wants to eat as slowly as possible, but she still needs to finish every banana before the guards come back. The task is to find the smallest integer k that guarantees she finishes in time.</p>
+
+        <p><strong>Signal in the problem:</strong> there is no sorted array anywhere, but there is a clear monotonic relationship: if speed k is fast enough to finish in time, any speed faster than k works too. That monotonic shape is the signal, even without the word sorted anywhere in the text.</p>
+
+        <p><strong>Keywords:</strong> minimum k, per hour, within h hours; essentially “find the smallest value for which the condition holds.”</p>
+
+        <p><strong>Conclusion:</strong> this is a Binary Search problem, just not over array indices. It is a binary search over possible answer values.</p>
+
+        <p><strong>Solution:</strong> binary search over the value of k. The lower bound is 1, since the eating speed must be a positive integer, and the upper bound is the size of the largest pile. At each step you take the midpoint k, calculate how many hours that speed would take across all piles (for each pile that's <code>ceil(piles[i] / k)</code>), and compare the total to h. If h hours are enough, you try a slower speed and move the upper bound down; if not, you move the lower bound up. The search converges on the smallest k for which Koko finishes within h hours.</p>
+
+        <h3>Example 2: 560. Subarray Sum Equals K</h3>
+
+        <p><strong>Problem (retold):</strong> you are given an array of integers and an integer k. You need to count how many contiguous subarrays have a sum equal to k. The array can contain both positive and negative numbers, and the same element can belong to more than one subarray.</p>
+
+        <p><strong>Signal in the problem:</strong> the problem talks about continuous stretches of the array and about a sum equal to a target number, meaning this is about range sums, not individual elements.</p>
+
+        <p><strong>Keywords:</strong> subarray sum, continuous, count.</p>
+
+        <p><strong>Conclusion:</strong> this is a Prefix Sum problem, paired with a hash table.</p>
+
+        <p><strong>Solution:</strong> walk through the array once while keeping a running sum (a prefix sum). At each position, check whether you have already seen a running sum equal to “current sum minus k.” If you have, that means there is a subarray ending at the current position with a sum of k, and you add however many times that earlier sum has appeared (stored in a hash table mapping sum to frequency). You also seed the table with a sum of 0 at frequency 1 up front, to account for subarrays that start at the very beginning of the array. Since it is a single pass, the solution runs in O(n).</p>
+
+        <p>As you can see, recognizing a pattern basically comes down to spotting these signals and keywords in the problem. Recognizing the pattern does not solve the problem for you. It just turns “I have no idea where to start” into “I know what to investigate first.” No single row in the table replaces the actual solution. It is only a starting point for where to begin thinking when you are reading the problem for the first time.</p>
+
+        <p class="article-outro">This approach will not turn live coding into an enjoyable pastime, and it is not meant to. But next time you open an unfamiliar problem, you will be scanning it for familiar signals instead of hoping for a stored memory, just like in the examples above. And even if the solution does not surface right away, you still know which direction to think in. That is already a different place to be than the panic of “I have no idea where to even start.”</p>
+
+        <p>And yes, if you do get a problem you have already spent time with during the interview, that is still a wonderful bonus. It just is not your only shot anymore.</p>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer"><div class="wrap footer-inner"><span>© 2026 Nadya Codes</span><div><a href="https://www.linkedin.com/in/nadezhdakaplun" rel="me">LinkedIn</a><a href="https://play.google.com/store/apps/dev?id=6169193065865664574&amp;hl=en">Google Play</a></div></div></footer>
+</body>
+</html>
