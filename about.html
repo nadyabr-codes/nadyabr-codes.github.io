@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About — Nadya Codes</title>
-  <meta name="description" content="About Nadya, an Android engineer building useful things.">
+  <title>About Nadya | Nadya Codes</title>
+  <meta name="description" content="Meet Nadya, an engineer who has been building software since the days of floppy disks and is still excited to learn something new.">
   <link rel="stylesheet" href="style.css">
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
@@ -28,8 +28,38 @@
     <nav class="main-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="engineering.html">Engineering</a><a href="ideas.html">Ideas</a><a class="active" href="about.html">About</a></nav>
   </div></header>
   <main class="wrap about-page">
-    <section class="about-intro"><p class="eyebrow">A little about me</p><div class="about-intro-main"><div><h1>I build Android apps that hold up over time.</h1><p class="about-lede">I’m Nadya, a senior Android engineer with more than ten years of experience building consumer products — from new features to mature, large-scale apps.</p></div><figure class="about-portrait"><img src="assets/images/nadya-bryzgalova.jpg" alt="Nadya Bryzgalova"></figure></div></section>
-    <section class="about-content"><p>My day-to-day work is mostly Kotlin and Jetpack Compose. I enjoy the practical side of engineering: clear architecture, dependable playback and billing flows, responsive interfaces, and code that the next person can comfortably work with.</p><p>I’ve worked across mobile, Android TV, and large-screen products, often alongside design, product, and backend teams. <strong>I also keep returning to my own apps and small experiments — trying out ideas, improving them, and learning from what changes along the way.</strong></p><p>This site is where I collect those projects, notes from the codebase, and the occasional rabbit hole.</p></section>
+    <section class="about-intro" aria-labelledby="about-title">
+      <p class="eyebrow">A little about me</p>
+      <div class="about-intro-main">
+        <div>
+          <h1 id="about-title">Hi. I’m Nadya, and I’m an old engineer.</h1>
+          <p class="about-lede">Not <em>that</em> old. I never wore oversized sweaters or grew a proper programmer beard.</p>
+        </div>
+        <figure class="about-portrait"><img src="assets/images/nadya-bryzgalova.jpg" alt="Nadya Bryzgalova"></figure>
+      </div>
+    </section>
+    <div class="about-content">
+      <p>But I’ve been around long enough to remember when software came on floppy disks. Yes, those things you still see in Save icons.</p>
+      <p>I used Norton Commander. I copied music onto hard drives. I optimized programs because they simply wouldn’t fit on a floppy disk. I downloaded books from the internet one painfully slow page at a time.</p>
+      <p>Over the years, I’ve built backend software for large companies, engineering and CAD software, and mobile apps, including software for some of the very first Android devices.</p>
+      <p>I’ve used a ridiculous number of languages along the way: C, Pascal, Object Pascal, C++, C#, Java, Python, Swift, Kotlin… and quite a few others I’ve probably forgotten. I’ve worked with hundreds of frameworks, tools, platforms, and environments.</p>
+      <p>I first tried Android when it was basically brand new, around version 1.1. Since then, I’ve watched the platform, the devices, the tools, the languages, and the whole industry change over and over again.</p>
+      <p>And that’s probably the thing I like most about software.</p>
+
+      <section aria-labelledby="never-finished">
+        <h2 id="never-finished">It’s never finished.</h2>
+        <p>There is always something new to learn, something weird to figure out, or some completely new way of building things. After all these years, I still get genuinely excited when I discover something I haven’t seen before.</p>
+        <p>For a long time, I thought writing about engineering was something other people did. You know, those very serious, very knowledgeable programmers with the impressive beards who clearly knew everything already.</p>
+        <p>Eventually I decided to give it a try anyway.</p>
+      </section>
+
+      <section aria-labelledby="experimenting">
+        <h2 id="experimenting">So this is me experimenting in public.</h2>
+        <p>I’ll write about things I build, things I break, things I learn, and rabbit holes I happen to fall into. Some of it will be useful. Some of it might be obvious. Some of it will probably be wrong.</p>
+        <p>If you enjoy it, let me know. If you don’t, well… you don’t have to read it.</p>
+        <p><strong>Either way, welcome.</strong></p>
+      </section>
+    </div>
     <section class="about-links"><h2>Find me elsewhere</h2><ul class="links-row"><li><a href="https://www.linkedin.com/in/nadezhdakaplun" rel="me">LinkedIn ↗</a></li><li><a href="https://play.google.com/store/apps/dev?id=6169193065865664574&amp;hl=en">NEK Games on Google Play ↗</a></li><li><a href="engineering.html">Engineering notes →</a></li></ul></section>
   </main>
   <footer class="site-footer"><div class="wrap footer-inner"><span>© 2026 Nadya Codes</span><div><a href="https://www.linkedin.com/in/nadezhdakaplun" rel="me">LinkedIn</a><a href="https://play.google.com/store/apps/dev?id=6169193065865664574&amp;hl=en">Google Play</a></div></div></footer>
