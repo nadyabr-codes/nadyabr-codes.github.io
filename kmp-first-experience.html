@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trying KMP Without Burning Out: Kotlin Multiplatform Through an Android Developer's Eyes — Nadya Codes</title>
+  <meta name="description" content="An Android developer’s first Kotlin Multiplatform game: shared Compose UI, platform APIs, Swift integration, and two release builds.">
+  <link rel="stylesheet" href="style.css">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyBX2JP2cuR5hqwxmBz8Sbk0M-R5X9yy_a0",
+      authDomain: "nadyabr-codes.firebaseapp.com",
+      projectId: "nadyabr-codes",
+      storageBucket: "nadyabr-codes.firebasestorage.app",
+      messagingSenderId: "14332726576",
+      appId: "1:14332726576:web:dc4c35e08ef0329d830cf5",
+      measurementId: "G-V221711C2R"
+    };
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a href="index.html" class="logo"><img src="assets/images/nadya-bryzgalova.jpg" alt="Nadya Bryzgalova">Nadya Bryzgalova</a>
+      <nav class="main-nav"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="engineering.html" class="active">Engineering</a><a href="ideas.html">Ideas</a><a href="about.html">About</a></nav>
+    </div>
+  </header>
+
+  <main class="wrap article-page kmp-article">
+    <article>
+      <header class="article-header">
+        <p class="eyebrow">Engineering</p>
+        <h1>Trying KMP Without Burning Out: Kotlin Multiplatform Through an Android Developer's Eyes</h1>
+        <p class="article-dek">One small game, two platforms: shared Kotlin and Compose, a little Swift, and a manageable first step into iOS.</p>
+        <div class="article-meta"><span>Sep 2026</span><span>Kotlin Multiplatform · Android · iOS</span></div>
+      </header>
+
+      <div class="article-content">
+<p>I&#39;ve never quite understood judging developers by their tech stack. I really haven&#39;t. If someone can pick up a new language in a reasonable amount of time and understands algorithms, data structures, system design, application architecture, databases, networking, concurrency, and memory management, why box them into a particular stack?</p>
+<p>I started out building desktop CAD systems, then worked on backends, then moved into mobile development and stayed with Android for a long time. A single stack has always felt a little too confining. Luckily, mobile development gives you plenty of opportunities to work closely with backend engineers. And then there are the regular requests to “make it work like the iOS version.” Before you know it, you&#39;re reading someone else&#39;s project, figuring out its architecture, and trying to understand why things work that way on the other platform.</p>
+<p>I think many engineers will recognize the feeling: you start reading code, work out what it does, and only a few seconds later notice that it&#39;s actually written in another language. You&#39;re already following the logic and how things fit together, while the syntax fades into the background. That&#39;s why it feels strange to define an engineer primarily by the language they happen to be using today.</p>
+<p>I do understand that knowing a platform saves time. iOS was a good example of that gap in practice: I&#39;d read plenty of Swift and understood it fine, I just hadn&#39;t had a reason to ship an app of my own yet. There is a difference between &quot;I can read this code&quot; and &quot;I can ship and maintain this app,&quot; and I wanted to close that gap myself.</p>
+<p>So I decided to build a simple game for Android and iOS and see which parts came easily and which made me stop and figure things out. Besides, it sounded fun. Giving ourselves a challenge is how we get better, isn&#39;t it?</p>
+<p>I chose Kotlin Multiplatform for this experiment. I believe in KMP&#39;s future. It seems like one of the most promising approaches to cross-platform development, and I wanted to try it myself. From my side, getting started looked comfortable enough: write an Android app, then hook up a few things so it builds for iOS too. Spoiler: that&#39;s pretty much how it went. The important part was choosing something small enough to try without burning out.</p>
+<p>I&#39;ll walk through how I organized the shared code, added the platform implementations, and got the game running on iOS. Then I&#39;ll cover how it all became two separate builds. This is the route I took from familiar Android development to my first iOS app of my own.</p>
+<h2 id="first-just-build-a-game">First, Just Build a Game</h2>
+<p>For the experiment, I chose a tile puzzle with cute animals. A picture is split into tiles, and you swap them around until you&#39;ve restored the original image. A few difficulty levels, saved progress, hints, and some satisfying effects when you win. It turned out to be surprisingly hard to put down.</p>
+<p>I created the project in Android Studio and initially worked much as I normally would: writing Kotlin, building the UI in Compose, and running the Android version.</p>
+<p>I structured the project for both platforms from the start, following the <a href="https://kotlinlang.org/docs/multiplatform/multiplatform-project-recommended-structure.html">Kotlin Multiplatform documentation</a>: shared code lives in a separate module, and each app has its own entry point. The project has three main parts:</p>
+<ul>
+<li><code>app</code> is the Android application. It contains <code>MainActivity</code>, AndroidManifest, Android resources, and the app&#39;s build configuration.</li>
+<li><code>composeApp</code> is the shared module. It contains the game&#39;s UI and logic, along with platform implementations written in Kotlin.</li>
+<li><code>iosApp</code> is the iOS application. This is where I later added the Xcode project, Swift code, and iOS build configuration.</li>
+</ul>
+<p>Inside <code>composeApp</code>, the code is divided into source sets. These are groups of source files with their own dependencies that Gradle includes in the relevant compilations. In my case, some sources are shared by both platforms, while others are specific to Android or iOS:</p>
+<pre><code class="language-plaintext">composeApp/
+└── src/
+    ├── commonMain/       ← shared Kotlin code and Compose UI
+    ├── androidMain/      ← Android implementations
+    ├── iosMain/          ← iOS implementations in Kotlin
+    └── commonTest/       ← shared tests
+</code></pre>
+<p>Almost the entire game gradually ended up in <code>commonMain</code>: the puzzle engine, models, screens, navigation, victory effects, and save logic. The images and privacy policy HTML also live in the shared module, under <code>commonMain/composeResources</code>.</p>
+<p>For example, <code>PuzzleEngine</code> handles tile swaps and checks the result, <code>GameScreen</code> displays the board, and <code>SettingsManager</code> saves progress. All of this is written once and used by both platforms. Saves are serialized to JSON, while Multiplatform Settings handles the underlying platform storage.</p>
+<figure class="kmp-figure "><div class="kmp-shot"><a href="assets/images/kmp/project-structure.png" target="_blank" rel="noopener" aria-label="Open full-size image: Android Studio project tree showing shared game, UI and settings alongside platform source sets"><img src="assets/images/kmp/project-structure.png" alt="Android Studio project tree showing shared game, UI and settings alongside platform source sets" width="2682" height="1854" loading="lazy" decoding="async"></a></div><figcaption>The shared game, screens, and SettingsManager in commonMain, with androidMain above and iosMain below. Click any screenshot to view it at full size.</figcaption></figure>
+
+
+<p><code>androidMain</code> and <code>iosMain</code> come into play when the code needs a platform API. For me, that meant getting the current time, displaying a WebView, and later integrating ads. The code in <code>iosMain</code> is still Kotlin: it can call APIs such as <code>NSDate</code> or <code>WKWebView</code>. Swift code lives separately in the iOS app.</p>
+<p>There was an important distinction here between “starting with Android” and “starting with Android-specific code.” I was only running and testing the game on Android at this point, but I was writing the game itself in the shared module from the beginning so I could use it on iOS later.</p>
+<p>The nicest thing about KMP turned out to be fairly ordinary: most of the time, I wasn&#39;t thinking about writing a cross-platform app at all. As long as the code lived in <code>commonMain</code>, it felt much like a regular Compose project. The difference only became noticeable when I needed to call a platform API.</p>
+<p>So my first takeaway was simple: for this game, KMP didn&#39;t make me think about two platforms all the time. It made me decide up front where the platforms actually differed.</p>
+<figure class="kmp-figure kmp-phones"><div class="kmp-gallery"><div class="kmp-shot"><span class="kmp-shot-label">Choose a difficulty</span><a href="assets/images/kmp/android-catalog.png" target="_blank" rel="noopener" aria-label="Open full-size image: Android puzzle catalog with 3×3, 4×4 and 5×5 difficulty options"><img src="assets/images/kmp/android-catalog.png" alt="Android puzzle catalog with 3×3, 4×4 and 5×5 difficulty options" width="1080" height="1920" loading="lazy" decoding="async"></a></div><div class="kmp-shot"><span class="kmp-shot-label">Play a puzzle</span><a href="assets/images/kmp/android-5x5.png" target="_blank" rel="noopener" aria-label="Open full-size image: Android game screen with a 5×5 owl puzzle"><img src="assets/images/kmp/android-5x5.png" alt="Android game screen with a 5×5 owl puzzle" width="1080" height="1920" loading="lazy" decoding="async"></a></div></div><figcaption>The Android version: difficulty selection, saved progress, and the game screen.</figcaption></figure>
+
+
+<h2 id="where-separate-implementations-come-in">Where Separate Implementations Come In</h2>
+<p>As I mentioned, I only needed to write separate platform implementations in three places: time, WebView, and ads. Let&#39;s look at each one.</p>
+<h3>1. Time</h3>
+<p>The shared code needs to save the time of the player&#39;s last action. On Android, I can call <code>System.currentTimeMillis()</code>. On iOS, I can get the time through <code>NSDate</code>.</p>
+<p>In KMP, this is handled with <code>expect</code> and <code>actual</code>: declare the contract in shared code and provide its implementations in the platform source sets.</p>
+<p>The shared code declares the function:</p>
+<pre><code class="language-kotlin">// commonMain
+expect fun currentTimeMillis(): Long
+</code></pre>
+<p>Android provides its implementation:</p>
+<pre><code class="language-kotlin">// androidMain
+actual fun currentTimeMillis(): Long =
+    System.currentTimeMillis()
+</code></pre>
+<p>And iOS provides its own:</p>
+<pre><code class="language-kotlin">// iosMain
+actual fun currentTimeMillis(): Long =
+    (NSDate().timeIntervalSince1970 * 1000).toLong()
+</code></pre>
+<p>The function has the same package and a matching signature across the source sets. The shared code simply calls <code>currentTimeMillis()</code>. The compiler connects it to the appropriate implementation when building for each platform. In this case, I didn&#39;t even need to write Swift to call <code>NSDate</code>: Kotlin/Native can access Apple&#39;s platform APIs directly from Kotlin.</p>
+<h3>2. WebView</h3>
+<p>I wanted to display the privacy policy inside the app using a local static HTML file. I kept the screen and HTML shared, with a platform implementation for the component that displays the HTML.</p>
+<p>In the shared code, I declared a composable function:</p>
+<pre><code class="language-kotlin">// commonMain
+@Composable
+expect fun LocalWebView(
+    htmlContent: String,
+    modifier: Modifier = Modifier
+)
+</code></pre>
+<p>On Android, this contract is backed by a <code>WebView</code> embedded in Compose through <code>AndroidView</code>. On iOS, it&#39;s a <code>WKWebView</code> inside <code>UIKitView</code>. The shared screen passes the HTML and a <code>Modifier</code>; creating the native component and loading the HTML are handled by each platform implementation. I didn&#39;t have to duplicate the screen layout or the document itself.</p>
+<h3>3. Ads</h3>
+<p>I&#39;m jumping ahead a little here: I integrated ads after the game was already running on iOS. But I&#39;ll cover them here to keep all three examples of platform implementations together.</p>
+<p>Ads made things more interesting. I needed to work out both how to call the SDK and when to show ads: skip the first win, leave enough time between ads, and avoid showing one when the player returns to an unfinished game. A single <code>showAd()</code> function wouldn&#39;t describe the whole problem.</p>
+<p>I split the responsibilities: <strong>the shared code knows when to show an ad, and the platform knows how to show it</strong>. The rules stayed in the shared <code>AdCoordinator</code>, while loading, readiness checks, and presentation sit behind the <code>AdService</code> interface. Here&#39;s a short extract from the coordinator:</p>
+<pre><code class="language-kotlin">// commonMain: extract from AdCoordinator
+fun showInterstitial(onDismissed: () -&gt; Unit) {
+    if (!canShowInterstitial()) {
+        onDismissed()
+        return
+    }
+
+    adService.showInterstitial {
+        updateLastShowTime()
+        onDismissed()
+    }
+}
+</code></pre>
+<p><code>canShowInterstitial()</code> checks the shared conditions and whether an ad is ready. If those conditions are met, the coordinator calls the platform service. Otherwise, the player continues without an ad.</p>
+<p>On Android, <code>AdService</code> is implemented by a Kotlin class that uses the Android ads SDK. On iOS, a Swift class implements <code>IosAdService</code>, which extends the shared contract. Each platform creates the appropriate object and passes it to the shared <code>App(adService)</code>. This is ordinary dependency injection: the shared code uses an interface without knowing the SDK details.</p>
+<p>The banner is embedded in the shared screen in the same way as the WebView: through <code>AndroidView</code> on Android and <code>UIKitView</code> on iOS. In the iOS version, the Swift service creates the banner&#39;s native View.</p>
+<p>The result was a separate SDK integration for each platform, with the rules for showing ads kept in one place. I can change those rules for both platforms without touching the code that loads and displays the ads.</p>
+<h2 id="where-the-shared-code-ends">Where the Shared Code Ends</h2>
+<p>After this experiment, here&#39;s how I&#39;d describe KMP: <strong>we choose the boundary between shared and platform code ourselves</strong>. In my game, it looked roughly like this:</p>
+<pre><code class="language-plaintext">commonMain
+├── Compose UI and navigation
+├── Game logic
+├── Saves and settings
+└── Ad placement rules
+             │
+     Contracts for platform functions and services
+             │
+     ┌───────┴───────────────────┐
+     │                           │
+androidMain                  iosMain
+├── System.currentTimeMillis ├── NSDate
+├── WebView                  ├── WKWebView
+└── Android Ads SDK          └── IosAdService interface
+                                 │
+                             iosApp (Swift)
+                             └── iOS Ads SDK
+</code></pre>
+<p>The diagram shows the places where I wrote platform code myself. Saves also need platform storage, but Multiplatform Settings already handles those differences.</p>
+<p>The boundary doesn&#39;t have to take the same shape everywhere. <code>expect</code> / <code>actual</code> was enough for time and WebView, while an interface with a platform implementation worked well for ads. What mattered was keeping the game&#39;s and the app&#39;s rules shared, while leaving the API-specific work where it was straightforward to implement and maintain.</p>
+<h2 id="how-the-shared-kotlin-code-made-it-into-the-ios-app">How the Shared Kotlin Code Made It into the iOS App</h2>
+<p>Now let me go back to the first iOS launch, before I added ads. The game was already running on Android, and I needed to get the same shared code running on the second platform. That required Xcode and a separate iOS project.</p>
+<p>It&#39;s worth separating two things here: <code>iosMain</code> contains Kotlin implementations for iOS, but the directory itself isn&#39;t an iOS app. It still needs a host app with an entry point, build settings, resources, and signing configuration. That&#39;s what Xcode builds.</p>
+<p>The host app itself is mostly boilerplate: a project file, a couple of Swift files, an Info.plist. I generated that scaffolding rather than typing it out by hand, then opened <code>iosApp.xcodeproj</code> in Xcode and configured what I needed to run it.</p>
+<figure class="kmp-figure "><div class="kmp-shot"><a href="assets/images/kmp/xcode-compose.png" target="_blank" rel="noopener" aria-label="Open full-size image: Xcode ContentView importing ComposeApp and creating the shared Kotlin view controller"><img src="assets/images/kmp/xcode-compose.png" alt="Xcode ContentView importing ComposeApp and creating the shared Kotlin view controller" width="2196" height="1160" loading="lazy" decoding="async"></a></div><figcaption>The current iOS host in Xcode. This screenshot includes the ad service added later; the examples below show the simpler version before ads.</figcaption></figure>
+
+
+<p>Let&#39;s look at how the shared Kotlin code ends up inside this app. At build time, it becomes a library that Xcode links into the application. At runtime, the Swift code opens a controller containing our Compose UI. Here&#39;s how the pieces fit together:</p>
+<pre><code class="language-plaintext">Build time
+  Xcode invokes Gradle
+      ↓
+  composeApp: commonMain + iosMain
+      ↓ Kotlin/Native
+  ComposeApp.framework
+      ↓ Xcode links it with Swift code and adds resources
+  iOS app
+
+Runtime
+  SwiftUI / ComposeView
+      ↓ calls MainViewController() from Kotlin
+  UIViewController created by ComposeUIViewController { … }
+      ↓
+  App(): shared Compose UI
+</code></pre>
+<p><strong>First, Gradle builds the Kotlin code.</strong> The <code>composeApp</code> module declares iOS targets for a physical device and an ARM simulator. For the selected target, Kotlin/Native compiles <code>commonMain</code> and <code>iosMain</code> into <code>ComposeApp.framework</code>, a library containing native code and an interface that Swift can use.</p>
+<pre><code class="language-kotlin">listOf(iosArm64(), iosSimulatorArm64()).forEach { target -&gt;
+    target.binaries.framework {
+        baseName = &quot;ComposeApp&quot;
+        isStatic = true
+    }
+}
+</code></pre>
+<p><strong>Xcode links the Kotlin framework into the app.</strong> The Build Phases section lists the build stages for the <code>iosApp</code> target, which is the application being built. Mine includes <code>Build Kotlin Framework</code>. It runs <code>build-kotlin.sh</code>, which calls:</p>
+<pre><code class="language-sh">./gradlew :composeApp:embedAndSignAppleFrameworkForXcode
+</code></pre>
+<p>This runs before Swift compilation. The Xcode settings also specify where to find the framework and that the app should link against <code>ComposeApp</code>. When I change Kotlin code, I don&#39;t have to build the library manually and copy it into Xcode.</p>
+<p><strong>At runtime, Swift displays the Compose UI.</strong> A Kotlin function creates a regular <code>UIViewController</code> with Compose inside. The examples here show the version before ads were added; the current version also receives the ad service.</p>
+<pre><code class="language-kotlin">fun MainViewController() = ComposeUIViewController {
+    App()
+}
+</code></pre>
+<p>SwiftUI hosts this controller through <code>UIViewControllerRepresentable</code>:</p>
+<pre><code class="language-swift">import ComposeApp
+import SwiftUI
+import UIKit
+
+struct ComposeView: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -&gt; UIViewController {
+        MainViewControllerKt.MainViewController()
+    }
+
+    func updateUIViewController(
+        _ uiViewController: UIViewController,
+        context: Context
+    ) {}
+}
+</code></pre>
+<p><code>MainViewControllerKt</code> is the name through which Swift sees the functions in my Kotlin file <code>MainViewController.kt</code>. SwiftUI ends up displaying the shared <code>App()</code>, so there&#39;s no need to rewrite the game screens.</p>
+<p>For the first launch, I selected the <code>iosApp</code> scheme and an iPhone simulator in Xcode, then pressed Run. A scheme determines what to build and which configuration to use; mine uses Debug for running the app.</p>
+<p>That was a satisfying moment: the game I&#39;d already built appeared on the iPhone, complete with the same pictures, tile swaps, saved progress, and victory effects.</p>
+<figure class="kmp-figure kmp-phones"><div class="kmp-gallery"><div class="kmp-shot"><span class="kmp-shot-label">Android</span><a href="assets/images/kmp/android-3x3.png" target="_blank" rel="noopener" aria-label="Open full-size image: Hedgehog puzzle 01 with a 3×3 board on Android"><img src="assets/images/kmp/android-3x3.png" alt="Hedgehog puzzle 01 with a 3×3 board on Android" width="1080" height="1920" loading="lazy" decoding="async"></a></div><div class="kmp-shot"><span class="kmp-shot-label">iOS</span><a href="assets/images/kmp/ios-3x3.png" target="_blank" rel="noopener" aria-label="Open full-size image: Hedgehog puzzle 01 with a 3×3 board and test ad on iPhone"><img src="assets/images/kmp/ios-3x3.png" alt="Hedgehog puzzle 01 with a 3×3 board and test ad on iPhone" width="1206" height="2622" loading="lazy" decoding="async"></a></div></div><figcaption>The same 3×3 hedgehog puzzle on Android and iOS, with different tile shuffles. These screenshots show later builds; the iOS version already includes a test ad.</figcaption></figure>
+
+
+<p>A few platform details did need attention, of course. For example, there was extra padding at the top: SwiftUI was respecting the safe area, while Compose was already handling system insets. The host view needed:</p>
+<pre><code class="language-swift">ComposeView()
+    .ignoresSafeArea(.all)
+</code></pre>
+<p>It&#39;s a small fix, but a good example of what this added to my usual development work: I now needed to understand which layer was responsible for a particular aspect of the screen&#39;s behavior.</p>
+<h2 id="one-codebase-two-builds-and-a-bit-about-the-stores">One Codebase, Two Builds, and a Bit About the Stores</h2>
+<p>Submitting to a store requires a release build and signing configuration. For Android, that means a signed AAB for Google Play. For iOS, it means configuring signing, creating an archive in Xcode, and submitting it through Apple&#39;s tools.</p>
+<p>There are several ways to build an Android app. I prefer my own shell script: it runs the build, gives the output the name I want, and puts it where I need it. In this project, the script checks the signing configuration, builds a release AAB through Gradle, and saves a copy with a convenient name.</p>
+<p>I&#39;ll probably set up fastlane for iOS eventually, but I&#39;m keeping it simple for now and using Archive in Xcode. That creates an app archive for submission to the store; in my scheme, it uses the Release configuration.</p>
+<p>To make the iOS build settings easier to navigate, I put together a table mapping them to familiar Android settings:</p>
+<div class="kmp-table" role="region" aria-label="Android and iOS build settings" tabindex="0"><table>
+<thead>
+<tr>
+<th>What we&#39;re configuring</th>
+<th>Android / Gradle</th>
+<th>iOS / Xcode</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>App build</td>
+<td><code>app/build.gradle.kts</code></td>
+<td>Target settings in <code>project.pbxproj</code></td>
+</tr>
+<tr>
+<td>App identifier</td>
+<td><code>applicationId</code></td>
+<td><code>PRODUCT_BUNDLE_IDENTIFIER</code></td>
+</tr>
+<tr>
+<td>Minimum OS version</td>
+<td><code>minSdk</code></td>
+<td><code>IPHONEOS_DEPLOYMENT_TARGET</code></td>
+</tr>
+<tr>
+<td>User-facing version</td>
+<td><code>versionName</code></td>
+<td><code>MARKETING_VERSION</code></td>
+</tr>
+<tr>
+<td>Build number</td>
+<td><code>versionCode</code></td>
+<td><code>CURRENT_PROJECT_VERSION</code></td>
+</tr>
+<tr>
+<td>Signing</td>
+<td><code>signingConfigs</code></td>
+<td>Signing settings: Team, signing style, certificates, and provisioning profiles</td>
+</tr>
+<tr>
+<td>App dependencies</td>
+<td><code>dependencies</code> in Gradle</td>
+<td>Linked frameworks and Swift Package Manager (SwiftPM) package products</td>
+</tr>
+<tr>
+<td>App metadata</td>
+<td>Some settings in <code>AndroidManifest.xml</code></td>
+<td>Some corresponding information in <code>Info.plist</code></td>
+</tr>
+</tbody></table></div>
+<p>These are matches in purpose; each platform has its own formats and rules. Still, the table makes it easier to find a familiar setting. For example, Team is the Apple Developer team used to sign the app, while a provisioning profile ties together the app identifier, signing certificate, and permitted capabilities and installation conditions.</p>
+<p>I won&#39;t go deep into publishing here, because this article is about my experience with KMP. The stores, their forms, and the review process are a story of their own. The preparation involved a similar set of tasks: descriptions, screenshots, icons, a privacy policy, data and advertising disclosures, and app settings. The exact forms and requirements differ, but the work itself felt familiar. KMP let me reuse most of the game, but dealing with the stores remains a separate task for each platform.</p>
+<h2 id="so-how-did-it-go">So, How Did It Go?</h2>
+<p>I enjoyed it. It was interesting and fun, and the amount of new information felt manageable. I came away with five things.</p>
+<ol>
+<li><p><strong>KMP doesn&#39;t require you to stop being an Android developer.</strong> Most of the work remained familiar: Kotlin, Compose, state, and architecture. That experience carried over to the second platform.</p>
+</li>
+<li><p><strong>Shared code isn&#39;t a goal in itself.</strong> Finding a sensible boundary mattered more to me than moving as many lines as possible into <code>commonMain</code>. Part of the ad integration stayed in Swift, and that&#39;s fine.</p>
+</li>
+<li><p><strong>Platform SDKs don&#39;t disappear.</strong> Ads, WebView, system APIs, and the app lifecycle still require an understanding of the platform. Shared contracts help isolate those differences, but they don&#39;t remove them.</p>
+</li>
+<li><p><strong>My familiarity with Swift proved useful in practice.</strong> I could already read iOS code; now I needed to write a small integration layer and figure out how to run the app. I didn&#39;t have to rewrite the game screens or logic in Swift.</p>
+</li>
+<li><p><strong>KMP reduced the work needed for the second platform, but didn&#39;t bring it down to zero.</strong> The game was reusable, while connecting the iOS app, testing on devices, building it, and preparing it for the store still required separate work.</p>
+</li>
+</ol>
+<p>That was enough for a first experiment. I know I picked a suitable example: the game has plenty of shared UI and logic, with only a few platform integrations. There&#39;s no Bluetooth, camera, heavy background processing, or long list of system services. I won&#39;t use this experience to make claims about every challenge in KMP. My goal was to try the technology in a small, complete app, from a game screen to two platforms and release builds, without turning the experiment into a second job.</p>
+<p>You can try the result for yourself. If you found the article useful, have a look at the game too. And if you enjoy it, I&#39;d appreciate a five-star rating in the store. It&#39;s a couple of taps for you and a little support for a small app getting started.</p>
+<p>Google Play:
+<a href="https://play.google.com/store/apps/details?id=com.nekgames.cuteanimaltilepuzzle&hl=en">https://play.google.com/store/apps/details?id=com.nekgames.cuteanimaltilepuzzle&amp;hl=en</a></p>
+<p>App Store:
+<a href="https://apps.apple.com/us/app/cute-animal-tile-puzzle/id6810313551">https://apps.apple.com/us/app/cute-animal-tile-puzzle/id6810313551</a></p>
+      </div>
+    </article>
+    <section class="article-comments" aria-label="Comments">
+      <script src="https://giscus.app/client.js"
+              data-repo="nadyabr-codes/nadyabr-codes.github.io"
+              data-repo-id="R_kgDOUHJp4Q"
+              data-category="Announcements"
+              data-category-id="DIC_kwDOUHJp4c4DE8FK"
+              data-mapping="pathname"
+              data-strict="1"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="bottom"
+              data-theme="light"
+              data-lang="en"
+              crossorigin="anonymous"
+              async>
+      </script>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="wrap footer-inner"><span>© 2026 Nadya Codes</span><div><a href="https://www.linkedin.com/in/nadezhdakaplun" rel="me">LinkedIn</a><a href="https://play.google.com/store/apps/dev?id=6169193065865664574&amp;hl=en">Google Play</a></div></div></footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    document.querySelectorAll('pre code').forEach(function (block) {
+      hljs.highlightElement(block);
+    });
+  </script>
+</body>
+</html>
