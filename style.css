@@ -191,14 +191,14 @@ body:has(.qr-dialog[open]) { overflow: hidden; }
 /* Screenshots and reading layout for the KMP article. */
 .kmp-article .article-content { max-width: 820px; margin-inline: auto; }
 .kmp-article .article-meta { flex-wrap: wrap; }
-.kmp-figure { margin: 38px 0 44px; }
-.kmp-figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; }
+.kmp-figure { width: 100%; max-width: 640px; margin: 38px auto 44px; }
+.kmp-figure img { display: block; width: auto; height: auto; max-width: 100%; max-height: min(400px, 50vh); margin-inline: auto; border: 1px solid var(--line); border-radius: 8px; }
 .kmp-figure figcaption { margin-top: 14px; color: var(--muted); font-size: 14px; line-height: 1.6; }
 .kmp-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; align-items: start; padding: 24px; background: #efece5; border: 1px solid var(--line); border-radius: 12px; }
 .kmp-shot { min-width: 0; }
-.kmp-shot a { display: block; }
+.kmp-shot a { display: block; max-width: 100%; }
 .kmp-shot-label { display: block; margin-bottom: 12px; color: var(--muted); font: 12px/1.5 var(--mono); text-transform: uppercase; letter-spacing: .05em; }
-.kmp-phones img { max-height: 580px; width: auto; max-width: 100%; margin-inline: auto; }
+.kmp-phones img { max-height: min(380px, 48vh); }
 .kmp-table { overflow-x: auto; margin: 30px 0 34px; }
 .kmp-table table { margin: 0; min-width: 620px; }
 .kmp-table:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
@@ -211,5 +211,5 @@ body:has(.qr-dialog[open]) { overflow: hidden; }
 }
 @media (max-width: 420px) {
   .kmp-gallery { grid-template-columns: 1fr; gap: 24px; }
-  .kmp-phones img { max-height: 500px; }
+  .kmp-phones img { max-height: min(380px, 55vh); }
 }
