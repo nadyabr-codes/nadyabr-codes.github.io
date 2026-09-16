@@ -12,6 +12,7 @@
 >
 
 <link rel="stylesheet" href="style.css">
+<script src="assets/project-qr.js" defer></script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-analytics.js";
@@ -82,12 +83,14 @@
           </div>
 
           <div class="project-store-links">
-            <a href="https://play.google.com/store/apps/details?id=com.nekgames.cuteanimaltilepuzzle" class="project-link">
-              View on Google Play ↗
-            </a>
-            <a href="https://apps.apple.com/us/app/cute-animal-tile-puzzle/id6810313551" class="project-link">
-              View on App Store ↗
-            </a>
+            <div class="project-store-action">
+              <a href="https://play.google.com/store/apps/details?id=com.nekgames.cuteanimaltilepuzzle" class="project-link" id="cute-animal-google-play"><span class="store-copy"><span class="store-platform">Android</span><span class="store-name">Google Play <span aria-hidden="true">↗</span></span></span></a>
+              <a href="assets/qr/cute-animal-tile-puzzle.png" class="project-qr-trigger" data-project-qr data-store-link="cute-animal-google-play" aria-label="Show Android QR code" title="Show Android QR code" aria-haspopup="dialog" aria-controls="project-qr-dialog"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM15 15h2v2h-2zM21 14v4h-3v3h-4M21 21h.01"/></svg><span>QR</span></a>
+            </div>
+            <div class="project-store-action">
+              <a href="https://apps.apple.com/us/app/cute-animal-tile-puzzle/id6810313551" class="project-link" id="cute-animal-app-store"><span class="store-copy"><span class="store-platform">iPhone / iPad</span><span class="store-name">App Store <span aria-hidden="true">↗</span></span></span></a>
+              <a href="assets/qr/cute-animal-tile-puzzle-ios.png" class="project-qr-trigger" data-project-qr data-store-link="cute-animal-app-store" data-store-name="App Store" aria-label="Show iPhone / iPad QR code" title="Show iPhone / iPad QR code" aria-haspopup="dialog" aria-controls="project-qr-dialog"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM15 15h2v2h-2zM21 14v4h-3v3h-4M21 21h.01"/></svg><span>QR</span></a>
+            </div>
           </div>
         </div>
 
@@ -136,9 +139,12 @@
             <p class="project-type">Android app</p>
           </div>
 
-          <a href="https://play.google.com/store/apps/details?id=com.nekgames.fitme.free&amp;hl=en" class="project-link">
-            View on Google Play ↗
-          </a>
+          <div class="project-store-links">
+            <div class="project-store-action">
+              <a href="https://play.google.com/store/apps/details?id=com.nekgames.fitme.free&amp;hl=en" class="project-link"><span class="store-copy"><span class="store-platform">Android</span><span class="store-name">Google Play <span aria-hidden="true">↗</span></span></span></a>
+              <a href="assets/qr/fitme.png" class="project-qr-trigger" data-project-qr aria-label="Show Android QR code" title="Show Android QR code" aria-haspopup="dialog" aria-controls="project-qr-dialog"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM15 15h2v2h-2zM21 14v4h-3v3h-4M21 21h.01"/></svg><span>QR</span></a>
+            </div>
+          </div>
         </div>
 
         <p class="project-description">
@@ -185,9 +191,12 @@
             <p class="project-type">Android app</p>
           </div>
 
-          <a href="https://play.google.com/store/apps/details?id=com.tvoj.bazar.tvojbazarmne&amp;hl=en" class="project-link">
-            View on Google Play ↗
-          </a>
+          <div class="project-store-links">
+            <div class="project-store-action">
+              <a href="https://play.google.com/store/apps/details?id=com.tvoj.bazar.tvojbazarmne&amp;hl=en" class="project-link"><span class="store-copy"><span class="store-platform">Android</span><span class="store-name">Google Play <span aria-hidden="true">↗</span></span></span></a>
+              <a href="assets/qr/tvoj-bazar.png" class="project-qr-trigger" data-project-qr aria-label="Show Android QR code" title="Show Android QR code" aria-haspopup="dialog" aria-controls="project-qr-dialog"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM15 15h2v2h-2zM21 14v4h-3v3h-4M21 21h.01"/></svg><span>QR</span></a>
+            </div>
+          </div>
         </div>
 
         <p class="project-description">
@@ -235,9 +244,12 @@
             <p class="project-type">Mobile game</p>
           </div>
 
-          <a href="https://play.google.com/store/apps/details?id=com.nekgames.angryvegetablesremaster&amp;hl=en" class="project-link">
-            View on Google Play ↗
-          </a>
+          <div class="project-store-links">
+            <div class="project-store-action">
+              <a href="https://play.google.com/store/apps/details?id=com.nekgames.angryvegetablesremaster&amp;hl=en" class="project-link"><span class="store-copy"><span class="store-platform">Android</span><span class="store-name">Google Play <span aria-hidden="true">↗</span></span></span></a>
+              <a href="assets/qr/angry-vegetables.png" class="project-qr-trigger" data-project-qr aria-label="Show Android QR code" title="Show Android QR code" aria-haspopup="dialog" aria-controls="project-qr-dialog"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM15 15h2v2h-2zM21 14v4h-3v3h-4M21 21h.01"/></svg><span>QR</span></a>
+            </div>
+          </div>
         </div>
 
         <p class="project-description">
@@ -286,6 +298,17 @@
 
   </div>
 </footer>
+
+<dialog id="project-qr-dialog" class="qr-dialog" aria-labelledby="qr-title" aria-describedby="qr-description">
+  <form method="dialog" class="qr-close-form">
+    <button class="qr-close" aria-label="Close QR code" autofocus>Close ×</button>
+  </form>
+  <p class="eyebrow">Get the app</p>
+  <h2 id="qr-title"></h2>
+  <p id="qr-description">Scan with your phone’s camera to open Google Play.</p>
+  <img class="qr-image" width="600" height="600" alt="">
+  <a class="project-link qr-store-link">Get it on Google Play ↗</a>
+</dialog>
 
 </body>
 </html>

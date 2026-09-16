@@ -98,6 +98,7 @@ a { color: inherit; text-decoration: none; }
 .projects { border-top: 1px solid var(--line); }
 .project-detail { display: grid; grid-template-columns: 100px 1fr; gap: 28px; padding: 52px 0; border-bottom: 1px solid var(--line); }
 .project-number { color: var(--accent); font: 14px var(--mono); }
+.project-content { min-width: 0; }
 .project-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
 .project-heading h2 { margin: 0; font: 400 52px/1 var(--display); letter-spacing: -.045em; }
 .project-store-links { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
@@ -159,3 +160,30 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
 }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
+
+/* Large, locally hosted QR codes for sharing projects in person. */
+.project-store-action { display: flex; align-items: stretch; width: 248px; border: 1px solid var(--line); border-radius: 10px; background: #fffdfb; }
+.project-store-action .project-link { display: flex; flex: 1; align-items: center; padding: 11px 16px; border-radius: 9px 0 0 9px; color: var(--ink); }
+.store-copy { display: flex; flex-direction: column; gap: 2px; }
+.store-platform { color: var(--muted); font: 10px/1.4 var(--mono); letter-spacing: .035em; text-transform: uppercase; }
+.store-name { font-size: 15px; line-height: 1.4; }
+.store-name > span { margin-left: 5px; color: var(--accent); }
+.project-qr-trigger { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 60px; padding: 9px 12px; border-left: 1px solid var(--line); border-radius: 0 9px 9px 0; color: var(--ink); font: 10px/1.2 var(--mono); letter-spacing: .05em; }
+.project-store-action a { transition: background .2s ease, color .2s ease; }
+.project-store-action a:hover { background: var(--soft-accent); color: var(--accent); }
+.project-store-action a:focus-visible { position: relative; outline-offset: 3px; }
+@media (max-width: 700px) {
+  .project-store-links { width: 100%; }
+  .project-store-action { width: 100%; max-width: 340px; }
+}
+.qr-dialog { width: min(460px, calc(100% - 24px)); max-height: calc(100dvh - 24px); padding: 20px; overflow: auto; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); color: var(--ink); text-align: center; }
+.qr-dialog::backdrop { background: rgb(0 0 0 / .65); }
+body:has(.qr-dialog[open]) { overflow: hidden; }
+.qr-close-form { display: flex; justify-content: flex-end; margin-bottom: 12px; }
+.qr-close { min-height: 44px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 6px; background: transparent; color: var(--ink); font: 500 14px var(--sans); cursor: pointer; }
+.qr-close:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.qr-dialog .eyebrow { margin-bottom: 10px; }
+.qr-dialog h2 { margin: 0; font: 400 clamp(28px, 6vw, 36px)/1.1 var(--display); }
+.qr-dialog p:not(.eyebrow) { margin: 12px 0; color: var(--muted); }
+.qr-image { display: block; width: 100%; height: auto; margin: 16px auto; background: white; image-rendering: pixelated; }
+.qr-store-link { display: inline-block; padding: 10px 0; white-space: normal; }
