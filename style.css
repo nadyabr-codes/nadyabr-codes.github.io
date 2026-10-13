@@ -213,3 +213,11 @@ body:has(.qr-dialog[open]) { overflow: hidden; }
   .kmp-gallery { grid-template-columns: 1fr; gap: 24px; }
   .kmp-phones img { max-height: min(380px, 55vh); }
 }
+
+/* Game revenue article */
+.lottery-figure { margin: 36px 0; }
+.lottery-figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; }
+.lottery-figure figcaption { margin-top: 12px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+.revenue-figure { max-width: 640px; margin-inline: auto; }
+.store-links a { overflow-wrap: anywhere; }
